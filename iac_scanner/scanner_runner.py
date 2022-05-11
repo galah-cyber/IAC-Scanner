@@ -7,7 +7,11 @@ class ScannerRunner:
     @staticmethod
     def __build_checkov(arguments: Arguments):
         
-        command = ["checkov", "-o", "json"]
+        command = ["checkov"]
+
+        if arguments.format == "JSON":
+            command.append("-o")
+            command.append("json")
 
         if arguments.inputFile:
             command.append("--file")
@@ -23,7 +27,11 @@ class ScannerRunner:
 
     @staticmethod
     def __build_tflint(arguments: Arguments):
-        command = ["tflint", "--format", "json"]
+        command = ["tflint"]
+
+        if arguments.format == "JSON":
+            command.append("--format")
+            command.append("json")
         
         if arguments.inputFile:
             command.append(arguments.inputFile)
@@ -41,8 +49,9 @@ class ScannerRunner:
         else:
             command.append(arguments.directory)
 
-        command.append('--format')
-        command.append("json")
+        if arguments.format == "JSON":
+            command.append('--format')
+            command.append("json")
 
         return command
 
