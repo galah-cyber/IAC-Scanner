@@ -6,13 +6,12 @@ class Arguments:
     def __init__(self):
         parser = argparse.ArgumentParser(description="CLI tool to run IAC security scanners", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-        parser.add_argument("-t", "--tools", nargs='*', default=["checkov"], help="Tools to run (Checkov, TFLint, tfsec)")
+        parser.add_argument("-t", "--tool", default="checkov", help="Tool to run (Checkov, TFLint, tfsec)")
         parser.add_argument("-d", "--directory", default="./", help="Directory to read files from")
-        parser.add_argument("-i", "--input", default="", help="Individual file to scan")
+        parser.add_argument("-i", "--input", help="Individual file to scan")
         parser.add_argument("-f", "--format", default="CLI", help="Format of output (CLI, JSON)")
-        parser.add_argument("-o", "--output", default="/", help="Directory to output files to")
-        parser.add_argument('--quiet', action=argparse.BooleanOptionalAction, help="Only retrieve results for failed checks")
-        parser.add_argument("--toFile", action=argparse.BooleanOptionalAction, help="Output to file")
+        parser.add_argument("-o", "--output", default="", help="Directory to output files to")
+        parser.add_argument('--loud', action=argparse.BooleanOptionalAction, help="Show passed checks")
 
         args = parser.parse_args()   
         self.config = vars(args)
@@ -38,10 +37,10 @@ class Arguments:
         return self.config["output"]
 
     @property
-    def tools(self):
-        return self.config["tools"]
+    def tool(self):
+        return self.config["tool"].upper()
 
     @property
-    def quiet(self):
-        return self.config["quiet"]
+    def loud(self):
+        return self.config["loud"]
 

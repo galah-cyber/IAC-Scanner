@@ -7,7 +7,6 @@ class ScannerRunner:
     @staticmethod
     def __build_checkov(arguments: Arguments):
         command = ["checkov"]
-
         if arguments.format == "JSON":
             command.append("-o")
             command.append("json")
@@ -18,9 +17,10 @@ class ScannerRunner:
         else:
             command.append("--directory")
             command.append(arguments.directory)
-            
-        if arguments.quiet:
+        
+        if not arguments.loud:
             command.append("--quiet")
+            command.append("--compact")
 
         return command
 
@@ -55,12 +55,10 @@ class ScannerRunner:
         return command
 
     @staticmethod
-    def run_scanner(arguments: Arguments, tool: str):
-
+    def run_scanner(arguments: Arguments):
         try:
-            selectedTool = Scanners[tool.upper()]
+            selectedTool = Scanners[arguments.tool]
             command = []
-
             if selectedTool == Scanners.TFLINT:
                 command = ScannerRunner.__build_tflint(arguments)
             elif selectedTool == Scanners.TFSEC:
@@ -68,15 +66,15 @@ class ScannerRunner:
             elif selectedTool == Scanners.CHECKOV:
                 command = ScannerRunner.__build_checkov(arguments)
 
-            if arguments.toFile:
+            if arguments.output:
                 return subprocess.run(command, stdout=subprocess.PIPE)
             else:
                 return subprocess.run(command)
 
         except FileNotFoundError:
-            print(f"Can not run {tool}. Make sure it is properly installed")
+            print(f"Can not run {arguments.tool}. Make sure it is properly installed")
         except KeyError:
-            print(f"{tool} is not supported.")
+            print(f"{arguments.tool} is not supported.")
         except Exception as e:
             print(e)
 
