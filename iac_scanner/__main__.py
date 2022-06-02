@@ -1,5 +1,5 @@
-from .arguments import Arguments
-from .scanner_runner import ScannerRunner
+from src.arguments import Arguments
+from src.scanner_runner import ScannerRunner
 import time
 
 def create_file(result, tool):

@@ -6,7 +6,6 @@ class ScannerRunner:
 
     @staticmethod
     def __build_checkov(arguments: Arguments):
-        
         command = ["checkov"]
 
         if arguments.format == "JSON":
