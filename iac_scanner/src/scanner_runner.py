@@ -17,7 +17,6 @@ class ScannerRunner:
         else:
             command.append("--directory")
             command.append(arguments.directory)
-        
         if not arguments.loud:
             command.append("--quiet")
             command.append("--compact")
